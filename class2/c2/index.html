@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+	</head>
+	<script type="text/javascript">
+		function draw() {
+		  var canvas = document.getElementById('p1');
+		  if (canvas.getContext){
+		    var ctx = canvas.getContext('2d');
+		
+		    ctx.fillStyle = "#0000FF";
+		        // 绘制成矩形
+		        ctx.fillRect(50 - 2, 50 - 2, 4, 4);
+		        
+		        // 设置字体样式
+		        ctx.font = "16px bold 宋体";
+		        // 绘制文字
+		        ctx.fillText("(" + 50 + ", " + 50 + ")", 50, 50);
+		      }
+		}
+	</script>
+	<style type="text/css">
+		
+	</style>
+	<body onload="draw()">
+		<canvas id="p1" width="150" height="150"></canvas>
+		<svg xmlns="http://www.w3.org/2000/svg" version="1.1">
+		  <rect width="300" height="100" fill="rgb(1,255,255)" stroke="rgb(0,0,0)" stroke-width="5px"/>
+		</svg>
+	</body>
+</html>
