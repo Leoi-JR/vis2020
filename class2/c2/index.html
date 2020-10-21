@@ -1,39 +1,46 @@
 <!DOCTYPE html>
 <html>
 <head>
-<script type="text/javascript" src="js/paper-full.min.js"></script>
+</head>
 <style type="text/css">
-	html,
-	body {
-	    height: 100%;
+	*{
+		margin: 0;
+		padding: 0;
 	}
-	canvas[resize] {
-	    width: 100%;
-	    height: 100%;
+	html,
+	body{
+		height: 100%;
+	}
+	canvas[resize]{
+		width: 100%;
+		height: 100%;
 	}
 </style>
-<script type="text/paperscript" canvas="myCanvas">
-var path;
-function onMouseDown(event) {
-    path = new Path();
-    path.strokeColor = 'black';
-    path.add(event.point);
-}
+<script type="text/javascript" src="js/paper-full.min.js"></script>
 
-function onMouseDrag(event) {
-    if(Key.isDown('a')) {
-        // 如果 'a' 键按下，
-        // 移动最后一个段点到鼠标的位置：
-        path.lastSegment.point = event.point;
-    } else {
-        // 如果键没被按下，在鼠标的位置添加一个段：
-        path.add(event.point);
-    }
-}
-	
-</script>
-</head>
+<script type="text/paperscript" canvas="myCanvas">
+ var path;
+ function onMouseDown(event) {
+ 	path = new Path();
+ 	path.strokeColor = 'black';
+ 	path.add(event.point);
+ }
+ 
+ function onMouseDrag(event) {
+ 	if(Key.isDown('a')) {
+ 		// If the 'a' key is down, change the point of
+ 		// the last segment to the position of the mouse:
+ 		path.lastSegment.point = event.point;
+ 	} else {
+ 		// If the a key is not down, add a segment
+ 		// to the path at the position of the mouse:
+ 		path.add(event.point);
+ 	}
+ }
+ </script>
 <body>
-    <canvas id="myCanvas" resize></canvas>
+<!-- 	<a href="#" onclick="tool1.activate();">Lines</a>
+	<a href="#" onclick="tool2.activate();">Clouds</a> -->
+	<canvas id="myCanvas" resize></canvas>
 </body>
 </html>
