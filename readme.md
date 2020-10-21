@@ -5,5 +5,5 @@
 + 第四期：可视化库echart，plotly.js实践
 + 第五期：空间可视化库amap，deck.gl实践
 + 第六期：（进阶）前端框架react学习与实践
-+ 第七期：后端服务器tornado，flask学习与实践 李美仪
++ 第七期：后端服务器tornado，flask学习与实践 （李美仪，钟国熙，祝总）
 + 第八期：后端数据库连接与使用
