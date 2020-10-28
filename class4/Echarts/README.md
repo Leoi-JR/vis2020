@@ -137,7 +137,7 @@ window.addEventListener("resize", function() {
 
 1. 引入到html页面中
 
-~~~javascript
+```javascript
 // 柱状图1模块
 (function() {
   // 实例化对象
@@ -185,7 +185,7 @@ window.addEventListener("resize", function() {
   // 把配置给实例对象
   myChart.setOption(option);
 })();
-~~~
+```
 
 让图表跟随屏幕**自适应**
 
@@ -204,7 +204,7 @@ window.addEventListener("resize", function() {
 
    - 修改图表大小  top 为 10px   bottom 为  4%    grid决定我们的柱状图的大小
 
-   ~~~JavaScript
+```JavaScript
 color: ["#2f89cf"],
     
 grid: {
@@ -214,13 +214,13 @@ grid: {
     bottom: "4%",
     containLabel: true
 },
-   ~~~
+```
 
    - X轴相关设置  xAxis
      - 文本颜色设置为   rgba(255,255,255,.6)   字体大小为 12px
      - X轴线的样式 不显示
 
-   ~~~JavaScript
+```JavaScript
    // 设置x轴标签文字样式
   // x轴的文字颜色和大小
         axisLabel: {
@@ -237,14 +237,14 @@ grid: {
        //    type: "solid"
       }
    },
-   ~~~
+```
 
    - Y 轴相关定制
      - 文本颜色设置为   rgba(255,255,255,.6)   字体大小为 12px
      - Y 轴线条样式 更改为  1像素的  rgba(255,255,255,.1) 边框
      - 分隔线的颜色修饰为  1像素的  rgba(255,255,255,.1)   
 
-   ~~~JavaScript
+```JavaScript
    // y 轴文字标签样式
 		axisLabel: {
 		      textStyle: {
@@ -266,11 +266,11 @@ grid: {
 		          color: "rgba(255,255,255,.1)"
 		        }
 		},
-   ~~~
+```
 
    - 修改柱形为圆角以及柱子宽度  series 里面设置
 
-   ~~~JavaScript
+```JavaScript
    series: [
          {
            name: "直接访问",
@@ -285,16 +285,16 @@ grid: {
          }
        ]
      };
-   ~~~
+```
 
    - 更换对应数据
 
-   ~~~JavaScript
+```JavaScript
    // x轴中更换data数据
     data: [ "旅游行业","教育培训", "游戏行业", "医疗行业", "电商行业", "社交行业", "金融行业" ],
    // series 更换数据
     data: [200, 300, 300, 900, 1500, 1200, 600],
-   ~~~
+```
 
 
 
@@ -449,7 +449,7 @@ legend: {
 - 修改地图省份背景  #142957
 - 地图放大通过  zoom   设置为1.2即可
 
-~~~javascript
+```javascript
     geo: {
       map: 'china',
       zoom: 1.2,
@@ -469,7 +469,7 @@ legend: {
         }
       }
     },
-~~~
+```
 
 总结：这例子是扩展案例，大家以后可以多看看社区里面的案例。
 
