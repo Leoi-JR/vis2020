@@ -574,30 +574,32 @@ svg.append("g")
 ```
 	//x轴的比例尺
 	var xScale = d3.scaleLinear()
-	    .domain([0,dataset.length])
-	    .range([0, width - padding.left - padding.right]);
+	    .domain([0,dataset.length+1])//定义域：几列，[0,9]
+	    .range([0, width - padding.left - padding.right]);//值域：x轴展现的长度,[0,340]
 	
 	//y轴的比例尺
 	var yScale = d3.scaleLinear()
-	    .domain([0,d3.max(dataset)])
-	    .range([height - padding.top - padding.bottom, 0]);
+	    .domain([0,d3.max(dataset)])//定义域：数据的最大值,[0,40]
+	    .range([height - padding.top - padding.bottom, 0]);//值域：y轴展现的长度,[0,340]
 
-	//定义x轴在下方
+	//定义x轴刻度的方向：下方
 	var xAxis = d3.axisBottom(xScale)
-	//定义y轴在左边
+	//定义y轴刻度的方向：左边
 	var yAxis = d3.axisLeft(yScale)
 	
 	//添加x轴
-	svg.append("g")
+	svg.append("g")// 在svg中添加一个包含坐标轴各元素的g元素
 	  .attr("class","axis")
 	  .attr("transform","translate(" + padding.left + "," + (height - padding.bottom) + ")")
-	  .call(xAxis); 
+	  //平移变换，参数为x坐标轴起始位置0处的（x，y）=(30,370)
+	  .call(xAxis); // 绘制坐标轴
 	
 	//添加y轴
-	svg.append("g")
+	svg.append("g")// 在svg中添加一个包含坐标轴各元素的g元素
 	  .attr("class","axis")
 	  .attr("transform","translate(" + padding.left + "," + padding.top + ")")
-	  .call(yAxis);
+	  //平移变换，参数为y坐标轴起始位置40处的（x，y）=(30,30)
+	  .call(yAxis);// 绘制坐标轴
 ```
 
 ### 添加矩形
@@ -612,91 +614,51 @@ svg.append("g")
 	        .enter()
 	        .append("rect")
 			.attr("fill","steelblue")
+			//请注意添加过渡变换的位置，此处会从左上角（0,0）放大出现
 			//.transition()
 			//.duration(2000)
 			//.attr('fill', 'grey')
-	        .attr("transform","translate(" + padding.left + "," + padding.top + ")")
-	        .attr("x", function(d,i){
-	            return xScale(i) + rectPadding/2 + (width-padding.left-padding.right)/(dataset.length*2);
-	        } )
-	        .attr("y",function(d){
-	            return yScale(d);
-	        })
-	        .attr("width", (width-padding.left-padding.right)/dataset.length - rectPadding )
+			.attr("transform","translate(" + padding.left + "," + padding.top + ")")
+	        // 坐标起始点y轴40处平移到（30, 30）的位置
+//鼠标交互请添加到此处，若添加到动画后面，无法实现交互功能（不知道为啥，试出来的）						
+			//设置每个矩形左边缘在x轴方向的位置，使之与x轴刻度相对应
+			.attr("x", function(d,i){
+	            return xScale(i) + rectPadding/2 + xScale(1)/2;
+				//xScale(i)：i个矩形加空白缝隙的距离
+				//其他是向右偏移的量：半个矩形加空白缝隙的距离（改了一个表达方式，一样的意思）
+				//xScale(1）=(width-padding.left-padding.right)/(dataset.length+1)
+			} )
+			//设置一个矩形的宽度
+	        .attr("width", function(d,i){
+	            return xScale(1) - rectPadding ;
+				//一个比例尺刻度减去空白缝隙
+			} )
+			//设置动画完成状态，矩形的上边缘各自的位置以及高度
+			.attr("y",function(d){
+				return yScale(d);
+			})
 	        .attr("height", function(d){
 	            return height - padding.top - padding.bottom - yScale(d);
 	        })
-
 ```
 
-### 添加文字标签
+### 添加动画效果
+
+1. delay() 指定延迟的时间，表示一定时间后才开始转变,单位为毫秒。此函数可以对整体指定延迟，也可以对个别指定延迟。
+
 
 ```
-//添加文字元素
-	var texts = svg.selectAll(".MyText")
-	        .data(dataset)
-	        .enter()
-	        .append("text")
-			.attr('font-size', '14px')
-			.attr('fill', 'white')
-	        .attr("transform","translate(" + padding.left + "," + padding.top + ")")
-	        .attr("x", function(d,i){
-	            return xScale(i) + rectPadding + (width-padding.left-padding.right)/(dataset.length+1)/2;
-	        } )
-	        .attr("y",function(d){
-	            return yScale(d);
-	        })
-	        .attr("dx",function(){
-	            return ((width-padding.left-padding.right)/(dataset.length+1)/2 - rectPadding)/2;
-	        })
-	        .attr("dy",function(d){
-	            return "1em";
-	        })
-	        .text(function(d){
-	            return d;
-	        })			
-```
-
-可以修改文字标签颜色和位置。
-
-### 添加一个圆型
-
-在文字标签代码的基础上改
-
-```
-var circle = svg.selectAll("circle")
-			.data(dataset)
-			.enter()
-			.append("circle")
-			.attr('r', 6)
-			.attr('fill', 'yellow')
-			.attr("transform","translate(" + padding.left + "," + padding.top + ")")
-			.attr("cx", function(d,i){
-				return xScale(i) +  (width-padding.left-padding.right)/(dataset.length+1);
-			} )
-/*动画
-			.attr("cy",function(){
-				return height - padding.top - padding.bottom;
-			})
-			.transition()
-			.delay(function(d,i){
-				return i * 300;
-			})
-			.duration(2000)
-			.ease(d3.easeBounce)
-*/
-			.attr("cy",function(d){
-				return yScale(d) ;
+//整体
+.delay(500)
+//个别
+.delay(function(d,i){
+			    return i * 300;
 			})
 ```
 
-### 让图表动起来
+2. duration() 指定过渡的持续时间，单位为毫秒。
 
-**实现动态的方法**
-
-1. transition() 启动过渡效果
-
-   给矩形和文字标签加上颜色变换过渡，注意顺序问题。
+3. transition() 启动过渡效果，放在初始状态与最终状态之间
 
 ```html
 .attr("fill","steelblue")   //初始颜色
@@ -704,9 +666,7 @@ var circle = svg.selectAll("circle")
 .attr("fill","grey")   		//终止颜色
 ```
 
-2. duration() 指定过渡的持续时间，单位为毫秒。
-
-3. ease()指定过渡的方式，常用的有：
+4. ease()指定过渡的方式，常用的有：
 
 ​	linear：普通的线性变化
 ​	circle：慢慢地到达变换的最终状态
@@ -719,35 +679,37 @@ var circle = svg.selectAll("circle")
 .ease(d3.easeBounce)
 ```
 
-4. delay() 指定延迟的时间，表示一定时间后才开始转变,此函数可以对整体指定延迟，也可以对个别指定延迟。
-
-对整体指定时：图形整体在延迟 1000 毫秒后发生变化，变化的时长为 3000 毫秒。因此，过渡的总时长为4000毫秒。
-
-```html
-.transition()
-.duration(3000)
-.delay(1000)
-```
-
-**实现简单的动态效果**
-
-柱形图增长出现的效果，y和height都要调整
+给之前绘制的柱形图添加划出和颜色渐变动画，代码如下：
 
 ```
-var rect = svg.selectAll(".MyRect")
+	var rect = svg.selectAll(".MyRect")
 	        .data(dataset)
 	        .enter()
 	        .append("rect")
 			.attr("fill","steelblue")
+			//请注意添加过渡变换的位置，此处会从左上角（0,0）放大出现
 			//.transition()
 			//.duration(2000)
 			//.attr('fill', 'grey')
 			.attr("transform","translate(" + padding.left + "," + padding.top + ")")
-	        .attr("x", function(d,i){
-	            return xScale(i) + rectPadding/2 + (width-padding.left-padding.right)/(dataset.length+1)/2;
-	        } )
-	        .attr("width", (width-padding.left-padding.right)/(dataset.length+1) - rectPadding )
-//动画       
+	        // 坐标起始点y轴40处平移到（30, 30）的位置
+
+//鼠标交互请添加到此处，若添加到动画后面，无法实现交互功能（不知道为啥，试出来的）			
+			
+			//设置每个矩形左边缘在x轴方向的位置，使之与x轴刻度相对应
+			.attr("x", function(d,i){
+	            return xScale(i) + rectPadding/2 + xScale(1)/2;
+				//xScale(i)：i个矩形加空白缝隙的距离
+				//其他是向右偏移的量：半个矩形加空白缝隙的距离（改了一个表达方式，一样的意思）
+				//xScale(1）=(width-padding.left-padding.right)/(dataset.length+1)
+			} )
+			//设置一个矩形的宽度
+	        .attr("width", function(d,i){
+	            return xScale(1) - rectPadding ;
+				//一个比例尺刻度减去空白缝隙
+			} )
+//增长弹出的动画开始			
+			//设置动画起始状态，矩形的上边缘都在x轴0刻度处，高度为0
 			.attr("y", function(){
 			    return height - padding.top - padding.bottom;
 			})
@@ -755,61 +717,30 @@ var rect = svg.selectAll(".MyRect")
 	            return 0;
 	        })
 			.transition()
+			//从左向右，矩形开始动的时间依次间隔0.3s
 			.delay(function(d,i){
 			    return i * 300;
 			})
+			//每个柱形图动画的持续时间为2s
 			.duration(2000)
 			//.ease(d3.easeBounce)
+			//弹跳的效果动画
+//动画结束，不需要可以去掉以上部分			
+			//设置动画完成状态，矩形的上边缘各自的位置以及高度
 			.attr("y",function(d){
-							return yScale(d);
-						})
+				return yScale(d);
+			})
 	        .attr("height", function(d){
 	            return height - padding.top - padding.bottom - yScale(d);
 	        })
-```
-
-文字标签从下往上出现并跳动
-
-```
-//添加文字元素
-	var texts = svg.selectAll(".MyText")
-	        .data(dataset)
-	        .enter()
-	        .append("text")
-			.attr('font-size', '14px')
-			.attr('fill', 'white')
-			//.attr('fill', 'black')
-	        .attr("transform","translate(" + padding.left + "," + padding.top + ")")
-	        .attr("x", function(d,i){
-	            return xScale(i) + rectPadding + (width-padding.left-padding.right)/(dataset.length+1)/2;
-	        } )
-//动画		
-			.attr("y",function(d){
-			    return height - padding.top - padding.bottom;
-			})
+//颜色渐变动画			
 			.transition()
-			.delay(function(d,i){
-			    return i * 300;
-			})
 			.duration(2000)
-			.ease(d3.easeBounce)
-
-	        .attr("y",function(d){
-	            return yScale(d);
-	        })
-	        .attr("dx",function(){
-	            return ((width-padding.left-padding.right)/(dataset.length+1)/2 - rectPadding)/2;
-	        })
-	        .attr("dy",function(d){
-	            return "1em";
-				//return "-0.5em";
-	        })
-	        .text(function(d){
-	            return d;
-	        })			
+			.attr('fill', 'grey')
+//动画结束，不需要可以去掉以上部分
 ```
 
-### 交互式操作
+### 添加交互式操作
 
 交互，指的是用户输入了某种指令，程序接受到指令之后必须做出某种响应。与图表的交互，指在图形元素上设置一个或多个监听器，当事件发生时，做出相应的反应。
 
@@ -821,29 +752,12 @@ circle.on("click", function(){
 });
 ```
 
-用户用于交互的工具一般有三种：鼠标、键盘、触屏。
+给之前绘制的柱形图添加鼠标进入高亮和点击跳动的交互操作，代码如下：
 
-1.鼠标事件：
-
-- click：鼠标单击某元素时，相当于 mousedown 和 mouseup 组合在一起。
-- mouseover：光标放在某元素上。
-- mouseout：光标从某元素上移出来时。
-- mousemove：鼠标被移动的时候。
-- mousedown：鼠标按钮被按下。
-- mouseup：鼠标按钮被松开。
-- mouseenter:区别
-- mouseleave:
-- dblclick：鼠标双击。
-
-2.键盘事件：
-
-- keydown：当用户按下任意键时触发，按住不放会重复触发此事件。该事件不会区分字母的大小写，例如“A”和“a”被视为一致。
-- keypress：当用户按下字符键（大小写字母、数字、加号、等号、回车等）时触发，按住不放会重复触发此事件。该事件区分字母的大小写。
-- keyup：当用户释放键时触发，不区分字母的大小写。 
-
-将之前的柱形图部分代码修改成如下代码。这段代码添加了鼠标移入（mouseover），鼠标移出（mouseout）两个事件的监听器。监听器函数中都使用了 d3.select(this)，表示选择当前的元素，this 是当前的元素，要改变响应事件的元素时这么写就好。
+监听器函数中都使用了 d3.select(this)，表示选择当前的元素，this 是当前的元素，要改变响应事件的元素时这么写就好。
 
 ```
+        //互动1：鼠标进入黄色高亮，移出恢复原色
         .on("mouseover",function(){
             d3.select(this)
             	.transition()
@@ -858,22 +772,102 @@ circle.on("click", function(){
         })
 ```
 
-点击圆形跳动
+```
+		//鼠标点击矩形向上跳动	
+		.on("click", function(){
+		    d3.select(this)
+				.transition()
+				.duration(500)
+				.attr("y",function(d){
+					return yScale(d) -10;
+				})
+				.attr("fill","lightblue")
+				.transition()
+				.duration(500)
+				.ease(d3.easeBounce)
+				.attr("y",function(d){
+					return yScale(d) ;
+				})
+				.attr("fill","steelblue")
+		});       
+```
+
+### 添加文字标签
 
 ```
-.on("click", function(){
-			    d3.select(this)
-					.transition()
-					.duration(500)
-					.attr("cy",function(d){
-						return yScale(d) -10;
-					})
-					.transition()
-					.duration(500)
-					.ease(d3.easeBounce)
-					.attr("cy",function(d){
-						return yScale(d) ;
-					})
-			});       
+//添加文字元素
+	var texts = svg.selectAll(".MyText")
+	        .data(dataset)
+	        .enter()
+	        .append("text")
+			.attr('font-size', '14px')
+			//设置字体大小
+			.attr('fill', 'white')
+			//设置字体颜色
+			.attr("transform","translate(" + padding.left + "," + padding.top + ")")
+			//平移坐标起始点，同理矩形
+			//设置文字的在坐标轴的位置，此处x和y设置与柱形图左上角相同
+			//达到的效果是文字的左下角与矩形的左上角重合
+			.attr("x", function(d,i){
+	            return xScale(i) + rectPadding/2 + xScale(1)/2;
+			} )
+/*动画			
+			.attr("y",function(){
+			    return height - padding.top - padding.bottom;
+			})
+			.transition()
+			.delay(function(d,i){
+			    return i * 300;
+			})
+			.duration(2000)
+			.ease(d3.easeBounce)
+*/
+	        .attr("y",function(d){
+	            return yScale(d);
+	        })
+			//设置文字与上述xy控制的点的相对位置，设置居中效果和上下位置
+	        .attr("dx",function(){
+	            return 7;
+	        })
+	        .attr("dy",function(d){
+	            return 16;
+				//return "-0.5em";
+	        })
+	        .text(function(d){
+	            return d;//显示文字内容
+	        })			
+```
+
+### 添加圆型
+
+在文字标签代码的基础上修改
+
+```
+		//添加圆形元素
+		var circle = svg.selectAll("circle")
+			.data(dataset)
+			.enter()
+			.append("circle")
+			.attr('r', 6)
+			.attr('fill', 'yellow')
+			.attr("transform","translate(" + padding.left + "," + padding.top + ")")
+			.attr("cx", function(d,i){
+				return xScale(i) +  xScale(1);
+			} )
+
+//从上方掉落动画开始
+			.attr("cy",function(){
+				return padding.top;
+			})
+			.transition()
+			.delay(function(d,i){
+				return i * 300;
+			})
+			.duration(1000)
+//动画结束			
+
+			.attr("cy",function(d){
+				return yScale(d) ;
+			})		        	
 ```
 
