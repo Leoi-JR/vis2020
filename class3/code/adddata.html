@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style type="text/css">
+	  .box {
+	    width: 300px;
+	    display: flex;
+	    flex-direction: row;
+	    justify-content: space-around;
+	    margin-bottom: 50px;
+	  }
+	</style>
+	<script src="https://cdn.bootcss.com/d3/3.2.1/d3.js"></script>
+</head>
+<body>
+  <script type="text/javascript">
+		var datest = [30,78,90,210,105,98,150,177];     //绘制柱形图所用的数据
+		var width = 500;        //svg绘图区域的宽度
+		var height = 500;       //svg绘图区域的高度
+		var svg = d3.select('body')       //选择<tbody>
+								.append('svg')					//在<tbody>中添加<svg>
+								.attr('width', width)				//设置<svg>的宽度属性
+								.attr('height', height)				//设置<svg>的高度属性
+		var padding = {top: 20, right: 20, bottom: 20, left: 20};     //定义上下左右的内边距
+		//矩形所占的宽度（包括空白）
+		var rectStep = 35;
+		//矩形所占的宽度（不包括空白）
+		var rectWidth = 30;
+ 
+		//绘制矩形
+		var rect = svg.selectAll('rect')			
+			.data(datest)							//绑定数据
+			.enter()									
+			.append('rect')						//添加rect元素，使他的数量和数组长度一致
+			.attr('fill', 'steelblue')      //设置颜色为steelblue
+			.attr('x', function(d,i) {
+			  return padding.left + i * rectStep;					//设置矩形的x坐标
+			})
+			.attr('y', function(d) {
+				return height - padding.bottom - d;        //设置矩形的y坐标
+			})
+			.attr('width', rectWidth)                //设置矩形的宽度
+			.attr('height', function(d) {
+			  return d;														//设置矩形的高度
+			});
+ 
+ 
+		//添加文字部分
+		var text = svg.selectAll('text')
+			.data(datest)
+			.enter()
+			.append('text')
+			.attr('fill', 'white')
+			.attr('font-size', '14px')
+			.attr('text-anchor', 'middle')
+			.attr('x', function(d,i) {
+			  return padding.left + i * rectStep;
+			})
+			.attr('y', function(d) {
+			  return height - padding.bottom - d;
+			})
+			.attr('dx', rectWidth / 2)         //dx是相对于x平移的大小
+			.attr('dy', '1em')								//dy是相对于y平移的大小
+			.text(function(d) {
+			  return d;
+			});
+ 
+	  //更新数据
+	  function draw() {
+	    //获取矩形的update部分
+	    var updateRect = svg.selectAll('rect')
+							.data(datest);
+	    //获取矩形的enter部分
+	    var enterRect = updateRect.enter();
+	    //获取矩形的exit部分
+	    var exitRect = updateRect.exit();
+	    //1.矩形的update部分的处理方法
+	    updateRect.attr('fill', 'steelblue')      //设置颜色为steelblue
+				.attr('x', function(d,i) {       //设置矩形的x坐标
+				  return padding.left + i * rectStep;
+				})
+				.attr('y', function(d) {         //设置矩形的y坐标
+				  return height - padding.bottom - d;
+				})
+				.attr('width', rectWidth)        //设置矩形的宽度
+				.attr('height', function(d) {			//设置矩形的高度
+					return d;
+				});
+ 
+	    //2.矩形的enter部分处理办法
+	    enterRect.append('rect')
+				.attr('fill', 'steelblue')        //设置矩形的颜色
+				.attr('x', function(d,i) {        //设置矩形的x坐标
+				  return padding.left + i * rectStep;
+				})
+				.attr('y', function(d) {						//设置巨型的y坐标
+				  return height - padding.bottom - d;
+				})
+				.attr('width', rectWidth)        //设置矩形的宽度
+				.attr('height', function(d) {			//设置矩形的高度
+				  return d;
+				});
+ 
+	    //3.矩形的exit处理方法
+	    exitRect.remove();
+ 
+	    //获取文字的update部分
+	    var updateText = svg.selectAll('text')
+							.data(datest);
+	    //获取文字的enter部分
+	    var enterText = updateText.enter();
+	    //获取文字的exit部分
+	    var exitText = updateText.exit();
+ 
+	    //1.文字的update部分的处理方法
+			updateText.attr('fill', 'white')
+								.attr('font-size', '14px')
+								.attr('text-anchor', 'middle')
+								.attr('x', function(d,i) {
+								  return padding.left + i * rectStep;
+								})
+								.attr('y', function(d) {
+								  return height - padding.bottom - d;
+								})
+								.attr('dx', rectWidth / 2)         //dx是相对于x平移的大小
+								.attr('dy', '1em')								//dy是相对于y平移的大小
+								.text(function(d) {
+								  return d;
+								});
+			//2.文字的enter部分的处理方法
+			enterText.append('text')
+							 .attr('fill', 'white')
+							 .attr('font-size', '14px')
+							 .attr('text-anchor', 'middle')
+							 .attr('x', function(d,i) {
+							   return padding.left + i * rectStep;
+							 })
+							 .attr('y', function(d) {
+							   return height - padding.bottom - d;
+							 })
+							 .attr('dx', rectWidth / 2)         //dx是相对于x平移的大小
+							 .attr('dy', '1em')								//dy是相对于y平移的大小
+							 .text(function(d) {
+							   return d;
+							 });
+			//3.文字的exit处理办法
+			exitText.remove();
+	  }
+ 
+	  //排序函数
+	  function mySort() {
+	    datest.sort(d3.ascending);
+	    draw();
+	  }
+ 
+	  //增加一个项函数
+	  function myAdd() {
+	    datest.push(Math.floor(Math.random() * 100));
+	    draw();
+	  }
+ 
+  </script>
+  <div class="box">
+  	<button type="button" onclick="mySort()">排序</button>
+		<button type="button" onclick="myAdd()">增加数据</button>
+  </div>
+</body>
+</html
