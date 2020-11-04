@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<script type="text/javascript" src="d3.min.js" ></script>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+		
+	</body>
+<script type="text/javascript">
+	//画布大小
+	var width = 400;
+	var height = 400;
+	
+	//在 body 里添加一个 SVG 画布   
+	var svg = d3.select("body")
+	    .append("svg")
+	    .attr("width", width)
+	    .attr("height", height);
+	
+	//画布周边的空白
+	 var padding = {left:30, right:30, top:30, bottom:30};
+	
+	//定义一个数组
+	var dataset = [10, 20, 30, 40, 33, 24, 12, 5];
+	
+	//x轴的比例尺
+	var xScale = d3.scaleLinear()
+	    .domain([0,dataset.length+1])
+	    .range([0, width - padding.left - padding.right]);
+	
+	//y轴的比例尺
+	var yScale = d3.scaleLinear()
+	    .domain([0,d3.max(dataset)])
+	    .range([height - padding.top - padding.bottom, 0]);
+
+	//定义x轴在下方
+	var xAxis = d3.axisBottom(xScale)
+	//定义y轴在左边
+	var yAxis = d3.axisLeft(yScale)
+	
+	//添加x轴
+	svg.append("g")
+	  .attr("class","axis")
+	  .attr("transform","translate(" + padding.left + "," + (height - padding.bottom) + ")")
+	  .call(xAxis); 
+	
+	//添加y轴
+	svg.append("g")
+	  .attr("class","axis")
+	  .attr("transform","translate(" + padding.left + "," + padding.top + ")")
+	  .call(yAxis);
+	  
+	//矩形之间的空白
+	var rectPadding = 5;
+	
+	//添加矩形元素
+	var rect = svg.selectAll(".MyRect")
+	        .data(dataset)
+	        .enter()
+	        .append("rect")
+			.attr("fill","steelblue")
+			//.transition()
+			//.duration(2000)
+			//.attr('fill', 'grey')
+			.attr("transform","translate(" + padding.left + "," + padding.top + ")")
+	        .attr("x", function(d,i){
+	            return xScale(i) + rectPadding/2 + (width-padding.left-padding.right)/(dataset.length+1)/2;
+	        } )
+			
+	        .attr("width", (width-padding.left-padding.right)/(dataset.length+1) - rectPadding )
+/*动画	        
+			.attr("y", function(){
+			    return height - padding.top - padding.bottom;
+			})
+			.attr("height", function(){
+	            return 0;
+	        })
+			.transition()
+			.delay(function(d,i){
+			    return i * 300;
+			})
+			.duration(2000)
+*/			
+			//.ease(d3.easeBounce)
+			.attr("y",function(d){
+							return yScale(d);
+						})
+	        .attr("height", function(d){
+	            return height - padding.top - padding.bottom - yScale(d);
+	        })
+			//.transition()
+			//.duration(2000)
+			//.attr('fill', 'grey')
+/*互动1
+			.on("mouseover",function(){
+				d3.select(this)
+					.transition()
+					.duration(500)
+					.attr("fill","yellow");
+			})
+			.on("mouseout",function(){
+				d3.select(this)
+					.transition()
+					.duration(500)
+					.attr("fill","steelblue");
+			})
+*/
+/*互动2
+			.on("click", function(){
+			    d3.select(this)
+					.transition()
+					.duration(500)
+					.attr("y",function(d){
+						return yScale(d) -10;
+					})
+					.attr("fill","lightblue")
+					.transition()
+					.duration(500)
+					.ease(d3.easeBounce)
+					.attr("y",function(d){
+						return yScale(d) ;
+					})
+					.attr("fill","steelblue")
+			});       
+*/		
+	//添加文字元素
+	var texts = svg.selectAll(".MyText")
+	        .data(dataset)
+	        .enter()
+	        .append("text")
+			.attr('font-size', '14px')
+			.attr('fill', 'white')
+			//.attr('fill', 'black')
+	        .attr("transform","translate(" + padding.left + "," + padding.top + ")")
+	        .attr("x", function(d,i){
+	            return xScale(i) + rectPadding + (width-padding.left-padding.right)/(dataset.length+1)/2;
+	        } )
+/*动画			
+			.attr("y",function(){
+			    return height - padding.top - padding.bottom;
+			})
+			.transition()
+			.delay(function(d,i){
+			    return i * 300;
+			})
+			.duration(2000)
+			.ease(d3.easeBounce)
+*/
+	        .attr("y",function(d){
+	            return yScale(d);
+	        })
+	        .attr("dx",function(){
+	            return ((width-padding.left-padding.right)/(dataset.length+1)/2 - rectPadding)/2;
+	        })
+	        .attr("dy",function(d){
+	            return "1em";
+				//return "-0.5em";
+	        })
+	        .text(function(d){
+	            return d;
+	        })			
+	        //.transition()
+			//.duration(2000)
+			//.attr('fill', 'orange')
+/*互动
+			.on("mouseover",function(){
+				d3.select(this)
+					.transition()
+					.duration(500)
+					.attr("fill","yellow");
+			})
+			.on("mouseout",function(){
+				d3.select(this)
+					.transition()
+					.duration(500)
+					.attr("fill","steelblue");
+			})
+*/
+/*		//添加圆形元素
+		var circle = svg.selectAll("circle")
+			.data(dataset)
+			.enter()
+			.append("circle")
+			.attr('r', 6)
+			.attr('fill', 'yellow')
+			.attr("transform","translate(" + padding.left + "," + padding.top + ")")
+			.attr("cx", function(d,i){
+				return xScale(i) +  (width-padding.left-padding.right)/(dataset.length+1);
+			} )
+*/
+/*动画
+			.attr("cy",function(){
+				return height - padding.top - padding.bottom;
+			})
+			.transition()
+			.delay(function(d,i){
+				return i * 300;
+			})
+			.duration(2000)
+			.ease(d3.easeBounce)
+*/
+//			.attr("cy",function(d){
+//				return yScale(d) ;
+//			})
+/*交互			
+			.on("click", function(){
+			    d3.select(this)
+					.transition()
+					.duration(500)
+					.attr("cy",function(d){
+						return yScale(d) -10;
+					})
+					.transition()
+					.duration(500)
+					.ease(d3.easeBounce)
+					.attr("cy",function(d){
+						return yScale(d) ;
+					})
+			});       
+*/			        		
+	
+</script>
+</html>

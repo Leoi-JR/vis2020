@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<script type="text/javascript" src="d3.min.js" ></script>
+		<script type="text/javascript" src="d3.js"></script>
+		
+		<script src="https://d3js.org/d3.v6.min.js"></script>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	
+	<body>
+		<!--<p>Hello World1</p>
+		<p>Hello World2</p>
+		<button id="id">123</button>-->
+		<p>apple</p>
+		<p id="banana">banana</p>
+		<p id="water">water</p>
+		
+	</body>
+	
+	<script type="text/javascript">
+		/*var paragraphs = document.getElementsByTagName("p");
+		for(i = 0;i < paragraphs.length;i++)
+		paragraphs[i].innerHTML = "I like dogs";*/
+		
+		//d3.select("body").selectAll("p").text("I like dogs");
+		
+		/*var p = d3.select("body").selectAll("p").text("I like dogs");
+		//修改段落的颜色和字体大小
+		p.style("color","blue")
+		 .style("font-size","36px");*/
+		 
+		 //d3.select("#id").text("I like dogs").style("color","red");
+		 
+		 var str = "Hello World";
+		 
+		 var body = d3.select("body");
+		 var p = body.selectAll("p");
+		 
+		 //var p = d3.select("body").selectAll("p");
+		 
+		 /*p.datum(str);
+		 p.text(function(d, i){
+		     return "第 "+ i + " 个元素绑定的数据是 " + d;
+		 });*/
+	 
+		/*var dataset = ["a","b","c"];
+		 p.data(dataset)
+		   .text(function(d, i){
+		       return "This is " + d;
+		   });*/
+		   
+		//var p = d3.select("body").select("p").style("color","red");
+		
+		//var p = d3.select("#banana").style("color","yellow");
+		
+		//var p = d3.selectAll(".Myclass").style("color","blue");
+		
+		body.append("p").text("Hello World!");
+		
+		d3.select("body").insert("p","#banana").text("Star");
+		
+		d3.select("#water").remove();
+		
+	</script>
+	
+	
+</html>
