@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <script type="text/javascript" src="{{ url_for('static', filename='lib/jquery.js') }}"></script>
+        <script type="text/javascript" src="{{ url_for('static', filename='hello.js') }}"></script>
+        <title>Title</title>
+    </head>
+    <body>
+<!--      表单传送数据-->
+     <form action="http://localhost:5000/result" , method="POST",enctype="multipart/form-data">
+        <p>Name <input type = "text" name = "Name" /></p>
+        <p>Password <input type = "text" name = "Password" /></p>
+        <p>Confirm Password <input type = "text" name = "Password2" /></p>
+        <p><input type = "submit" value = "submit" /></p>
+         {% for message in get_flashed_messages() %}
+            {{ message }}
+         {% endfor %}
+     </form>
+
+
+
+</html>
