@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<title>传输文件</title>
+<form id="form1" enctype="multipart/form-data">
+    <p>
+        填写id：<input type="text" name="id" id="id">
+    </p>
+    <p>
+        填写name：<input type="text" name="name" id="name">
+    </p>
+    <p>
+        填写balance：<input type="text" name="balance" id="balance">
+    </p>
+    <p>
+        上传photo：<input type="file" name="file" id="file" ><!--onchange="load()"-->
+    </p>
+    <p style="display: none;">
+        photo64编码：<textarea cols="60" rows="15" id="show" name="show"></textarea>
+    </p>
+
+    <button onclick="upload()">提交</button>
+</form>
+<script src="http://cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
+
+<!-- 当上传文件之后进行的操作 -->
+<script type="text/javascript">
+    function load() {
+        var file = document.getElementById('file').files[0]
+        console.log("读取源文件")
+        console.log(file)
+        
+        var reader = new FileReader()
+        //将文件以Data URL形式读入页面  
+        reader.readAsDataURL(file);
+        reader.onload = function() {
+            var imgUrlBase64 = this.result
+            console.log("转化为img64：")
+            console.log(imgUrlBase64)
+            document.getElementById('show').value = imgUrlBase64
+        }
+    }
+
+    function upload() {
+        let formData = new FormData($("#form1")[0])
+        console.log('点击提交之后，打印FormData中的数据')
+        console.log(formData.get('file'))
+        $.ajax({
+            url: 'http://127.0.0.1:5000/upload',
+            type: 'POST',
+            data: formData,
+            async: false,
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: function(returndata) {
+                alert(returndata);
+            },
+            error: function(error) {
+                alert(error);
+            }
+        })
+    }
+</script> 

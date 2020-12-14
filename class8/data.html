@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<title>展示数据</title>
+<h1>展示数据</h1>
+<style>
+    table,
+    th,
+    td {
+        border: 1px solid red;
+        height: 30px;
+    }
+    
+    table {
+        border-collapse: collapse;
+    }
+    
+    th,
+    td {
+        width: 300px;
+        text-align: center;
+    }
+    
+    .img {
+        width: 30px;
+        height: 30px;
+    }
+</style>
+
+<body>
+
+
+    <table>
+        <tr>
+            <th>id</th>
+            <th>name</th>
+            <th>balance</th>
+            <th>photo</th>
+        </tr>
+
+
+        {% for x in mycol.find() %}
+        <tr>
+            <td>{{x.id}}</td>
+            <td>{{x.name}}</td>
+            <td>{{x.balance}}</td>
+            <!-- td><img src={{x.photo}} class="img"></td>-->
+
+        </tr>
+        {% endfor %}
+    </table>
+</body>
