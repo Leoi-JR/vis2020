@@ -121,10 +121,10 @@ collection=db.student#集合名为student
 ### 6.插入数据：
 
 ```json
-//样例数据
+#样例数据
 student = {
-    'id': '20170101',
-    'name': 'Jordan',
+    '_id': '1',
+    'name': 'Kevin',
     'age': 20,
     'gender': 'male'
 }
@@ -194,6 +194,10 @@ results = collection.find({'age': {'$gt': 20}})
 
 ```python
 count = collection.find().count() #统计查询返回的数量
+
+#count = collection.count_documents({'age': {'$gte': 20}}) #统计查询返回的数量
+#print(count)
+
 results = collection.find().sort([('age',pymongo.ASCENDING),('name', pymongo.ASCENDING)]) #多条件排序
 results = collection.find().sort('name', pymongo.ASCENDING).skip(2) #分页提取数据
 ```
@@ -225,7 +229,7 @@ print(result.matched_count, result.modified_count)
 condition = {'age': {'$gt': 20}}
 result = collection.update_many(condition, {'$inc': {'age': 1}})
 print(result)
-print(result.matched_count, result.modified_count)
+print(result.matched_count, result.modified_count)#找到的 和 修改的
 ```
 
 ### 9.删除文档：
@@ -359,7 +363,7 @@ def upload():
     print(other)
 
     mydict = {"id": request.form["id"], "name": request.form["name"],
-              "balance": request.form["balance"], "photo": request.form["show"]}
+              "balance": request.form["balance"]}#, "photo": request.form["show"]
     mycol.insert_one(mydict)
 
     for x in mycol.find():
@@ -394,7 +398,7 @@ if __name__ == '__main__':
         填写balance：<input type="text" name="balance" id="balance">
     </p>
     <p>
-        上传photo：<input type="file" name="file" id="file" onchange="load()">
+        上传photo：<input type="file" name="file" id="file" ><!--onchange="load()"-->
     </p>
     <p style="display: none;">
         photo64编码：<textarea cols="60" rows="15" id="show" name="show"></textarea>
@@ -498,7 +502,7 @@ http://127.0.0.1:5000/show
             <td>{{x.id}}</td>
             <td>{{x.name}}</td>
             <td>{{x.balance}}</td>
-            <td><img src={{x.photo}} class="img"></td>
+            <!-- td><img src={{x.photo}} class="img"></td>-->
 
         </tr>
         {% endfor %}
