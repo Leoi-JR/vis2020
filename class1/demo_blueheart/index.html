@@ -1,0 +1,46 @@
+<!--
+ * @Description: 一个简单的个人页展示
+ * @Autor: Blueheart
+ * @Date: 2021-03-15 11:57:13
+ * @LastEditTime: 2021-03-15 13:13:10
+ * @FilePath: \vis2020\class1\demo_blueheart\index.html
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Blueheart</title>
+</head>
+
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="#">首页</a></li>
+                <li><a href="#">关于我</a></li>
+                <li><a href="#">心情随笔</a></li>
+                <li><a href="#">技术博文</a></li>
+                <li><a href="#">留言</a></li>
+                <!-- 设置特效用的 -->
+                <div class="slider"></div>
+            </ul>
+        </nav>
+        <main>
+            <!-- 文字容器，统一由h1控制 -->
+            <h1>
+                <!-- 使用span显示文字, data-text为Json格式的数组 -->
+                <span id="text" data-text='["我是Blueheart", "很开心认识大家", "Enjoy yourself！"]'></span>
+                <!-- 来个闪烁的光标 -->
+                <span class="mark"> </span>
+            </h1>
+        </main>
+    </header>
+
+</body>
+<script src="index.js"></script>
+
+</html>
