@@ -146,13 +146,13 @@ https://www.runoob.com/svg/svg-tutorial.html
   
      + 初级文本 
 	```html
-        <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
-		<text x="0" y="15" fill="red">I love SVG</text>
-	</svg>
-	```
+	<svg xmlns="http://www.w3.org/2000/svg" version="1.1">
+	<text x="0" y="15" fill="red">I love SVG</text>
+        </svg>
+        ```
 	
      + 旋转字体
-     	```html
+      ```html
         <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
 		<text x="0" y="15" fill="red" transform="rotate(30 20,40)">I love SVG</text>
 	</svg>
