@@ -150,13 +150,13 @@ https://www.runoob.com/svg/svg-tutorial.html
 	<text x="0" y="15" fill="red">I love SVG</text>
         </svg>
         ```
-     + 旋转字体
-      ```html
+    + 旋转字体
+     ```html
         <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
 		<text x="0" y="15" fill="red" transform="rotate(30 20,40)">I love SVG</text>
         </svg>
 	```
-     + 作为连接的字体
+     + 作为链接的字体
      ```html
 	<svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink">
 		<a xlink:href="http://www.w3schools.com/svg/" target="_blank"> 
