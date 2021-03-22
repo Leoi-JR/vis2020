@@ -2,8 +2,9 @@
 ## 两种绘图方式
 
 ### Canvas 基于像素
-
+参考网站：
 https://developer.mozilla.org/zh-CN/docs/Web/API/Canvas_API
+https://www.runoob.com/html/html5-canvas.html
 + \<canvas\>元素
 ```html
 <canvas id="tutorial" width="150" height="150"></canvas> // 只有width和height两个属性
@@ -16,6 +17,7 @@ https://developer.mozilla.org/zh-CN/docs/Web/API/Canvas_API
     <script type="text/javascript">
       function draw(){
         var canvas = document.getElementById('tutorial');
+	    // 渲染2d上下文
         if (canvas.getContext){
           var ctx = canvas.getContext('2d');
 		  // 画图代码
@@ -139,7 +141,26 @@ https://www.runoob.com/svg/svg-tutorial.html
 		- A = elliptical Arc  
 		- Z = closepath  
 	**以上所有命令均允许小写字母。大写表示绝对定位，小写表示相对定位。**
-     
+		 ```
+  + 文本 <text>
+     + 初级文本 
+     ```<svg xmlns="http://www.w3.org/2000/svg" version="1.1">
+	<text x="0" y="15" fill="red">I love SVG</text>
+	</svg>
+	```
+     + 旋转字体
+     ```<svg xmlns="http://www.w3.org/2000/svg" version="1.1">
+	<text x="0" y="15" fill="red" transform="rotate(30 20,40)">I love SVG</text>
+	</svg>
+	```
+     + 作为连接的字体
+     ```<svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink">
+	<a xlink:href="http://www.w3schools.com/svg/" target="_blank"> 
+	<text x="0" y="15" fill="red">I love SVG</text>
+	</a>
+	</svg>
+	```
+
 ## 交互
   * 绑定交互事件
        
